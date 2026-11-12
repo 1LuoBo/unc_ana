@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unc_ana"
+version = "0.1.0"
+description = "Cross-section / flux uncertainty breakdown for the SBND nu_mu -> nu_e constraint"
+requires-python = ">=3.10"
+dependencies = ["numpy", "pandas", "matplotlib"]
+
+[project.optional-dependencies]
+# nueana (lynnt20/nueana, ccbc branch) must be installed/on PYTHONPATH separately.
+reweight = ["scikit-learn", "hep_ml"]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
