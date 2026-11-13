@@ -1,9 +1,9 @@
 """Plot helpers from the analysis notebook."""
 import matplotlib.pyplot as plt
 import numpy as np
-from constants import *
-from uncertainty import *
-from classes import *
+from .constants import *
+from .uncertainty import *
+from .classes import *
 
 __all__ = ['scatter_fracs', 'hist_step', 'q0q3', 
            'unc_plot_by_mode']
