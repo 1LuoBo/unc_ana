@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-from classes import *
+from .classes import *
 
 __all__ = ["sort_part", "_knob_name", "calc_frac_df", "get_cov_bins"]
 
