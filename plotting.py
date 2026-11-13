@@ -110,12 +110,12 @@ def unc_plot_by_mode(df, bins, pot, var = ('E', '', '')):
         print('Running through '+ genie_dict[i])
         df_int = df[df.genie_mode == i]
         outs[i] = get_cov_bins(df_int, bins, pot, var)
-    plt.stairs(data = out_tot.frac_bin, 
+    plt.stairs(values = out_tot.frac_bin, 
                edges = bins, 
                label = f'Total ({out_tot.frac_total:.2e}%)',
                color = 'black')
     for i in genie_dict.keys():        
-        plt.stairs(data = outs[i].frac_bin, 
+        plt.stairs(values = outs[i].frac_bin, 
                    edges = bins, 
                    color = color_mode[i],
                    label = f'Total ({out_tot.frac_total:.2e}%)')
