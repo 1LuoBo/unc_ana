@@ -14,17 +14,19 @@ pytest
 ```python
 import numpy as np, unc_ana as ua
 
-bins = np.array([0.5, 1, 1.7, 2.5, 3.5, 5, 7])
-mh_mu = ua.compute_mode_hists(numu_df, ("E", "", ""), bins, mode_col=("genie_mode", "", ""))
-mh_e  = ua.compute_mode_hists(nue_df,  ("E", "", ""), bins, mode_col=("genie_mode", "", ""))
-t_mu, t_e = ua.breakdown(mh_mu), ua.breakdown(mh_e)
-ua.check_closure(t_mu); ua.check_closure(t_e)      # channels sum to the total
-cmp = ua.compare_samples(t_mu, t_e, level="group")  # or level="knob"
+ua.add_kinematics(numu_df, nue_df)                 # q0, modq, lepton_genE
+w_mu, w_e = ua.reweight_two_way(numu_df, nue_df)   # features default to [('E','','')]
+numu_df["weights_mc"], nue_df["weights_mc"] = w_mu, w_e
+ua.test_classifier(numu_df, nue_df, features=[("q0", "", ""), ("modq", "", "")])
+
+fracs = ua.calc_frac_df(numu_df, nue_df, pot_numu, pot_nue)       # sector="Flux" for flux only
+ua.scatter_fracs(fracs)
+frac_mu, frac_e = ua.get_cov_bins(numu_df, nue_df, [0.5, 1, 1.7, 2.5, 3.5, 5, 7], pot_numu, pot_nue)
+ua.hist_step(numu_df.E, nue_df.E, np.linspace(0.5, 5, 10), r"$E_\nu$",
+             weights_mu=numu_df.weights_mc, weights_e=nue_df.weights_mc)
 ```
 
-`frac_mode` is a channel's own uncertainty (compare nu_mu vs nu_e at fixed channel);
-`frac_contrib` is its additive share of the sample uncertainty (this is where a
-different channel mix shows up). See the module docstring of `uncertainty.py`.
+Two-way reweighting: nu_mu is reweighted to nu_e, then nu_e to the *reweighted* nu_mu, so
+neither sample keeps phase space the other lacks. For a per-interaction-channel breakdown,
+call `calc_frac_df` on `df[df.genie_mode == m]` subsets (`bins` is a keyword argument).
 
-## Status
-`utils.py` is the earlier notebook-derived draft and is superseded by `src/unc_ana/`.
