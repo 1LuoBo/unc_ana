@@ -1,0 +1,7 @@
+numpy
+pandas
+matplotlib
+scipy
+scikit-learn
+hep_ml
+# plus nueana (lynnt20/nueana, ccbc branch) on PYTHONPATH

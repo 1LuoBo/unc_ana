@@ -84,4 +84,3 @@ def test_classifier(numu_df, nue_df, features=None):
     return auc_score
 
 
-test_classifier.__test__ = False  # not a pytest test
