@@ -2,6 +2,8 @@ import pandas as pd
 import sys; sys.path.append("/exp/sbnd/app/users/lynnt/cafpyana")
 from makedf.util import *
 
+__all__ = ["contained", "cont_exit", "muInScore", "muInSpill", "in_detector", "clean_duplicates", "muselect"]
+
 def contained(df):
     return (df.end.z > 5) & (df.end.z < 495) & (df.end.x > -195) & (df.end.x < 195) & (df.end.y > -195) & (df.end.y < 195)
 

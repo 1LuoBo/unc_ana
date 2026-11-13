@@ -2,6 +2,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+__all__ = ['scatter_fracs', 'hist_step', 'q0q3']
+
+
 
 def scatter_fracs(fracs_df):
     """frac_mu vs frac_e per knob (top) and their difference (bottom)."""

@@ -4,6 +4,9 @@ from __future__ import annotations
 import numpy as np
 
 
+__all__ = ['reweight_two_way', 'test_classifier']
+
+
 def _gb_reweight(source, target, source_w, target_w, n_estimators, learning_rate,
                  max_depth, min_samples_leaf, subsample, n_folds, verbose):
     from hep_ml.reweight import GBReweighter, FoldingReweighter
