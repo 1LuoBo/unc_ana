@@ -1,8 +1,12 @@
 """Plot helpers from the analysis notebook."""
 import matplotlib.pyplot as plt
 import numpy as np
+from constants import *
+from uncertainty import *
+from classes import *
 
-__all__ = ['scatter_fracs', 'hist_step', 'q0q3']
+__all__ = ['scatter_fracs', 'hist_step', 'q0q3', 
+           'unc_plot_by_mode']
 
 
 
@@ -97,3 +101,21 @@ def q0q3(numu_df, nue_df, nbins=20, q0_bins=None):
     ax.set_title("2D Area-Normalized Ratio Map in $q_0 - q_3$ Space", fontsize=14)
     fig.tight_layout()
     return fig
+
+def unc_plot_by_mode(df, bins, pot, var = ('E', '', '')):
+    print('Running through all interaction modes.')
+    out_tot = get_cov_bins(df, bins, pot, var)
+    outs = {}
+    for i in genie_dict.keys():
+        print('Running through '+ genie_dict[i])
+        df_int = df[df.genie_mode == i]
+        outs[i] = get_cov_bins(df_int, bins, pot, var)
+    plt.stairs(data = out_tot.frac_bin, 
+               edges = bins, 
+               label = f'Total ({out_tot.frac_total:.2e}%)',
+               color = 'black')
+    for i in genie_dict.keys():        
+        plt.stairs(data = outs[i].frac_bin, 
+                   edges = bins, 
+                   color = color_mode[i],
+                   label = f'Total ({out_tot.frac_total:.2e}%)')

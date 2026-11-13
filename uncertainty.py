@@ -3,8 +3,11 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+from classes import *
 
 __all__ = ["sort_part", "_knob_name", "calc_frac_df", "get_cov_bins"]
+
+
 
 
 
@@ -39,13 +42,13 @@ def _knob_name(uni):
     return uni
 
 
-def _run_total_cov(df, pot, bins, total_cov_fn):
-    return total_cov_fn(reco_df=df, reco_var=("E", "", ""), bins=bins,
+def _run_total_cov(df, pot, bins, total_cov_fn, var):
+    return total_cov_fn(reco_df=df, reco_var=var, bins=bins,
                         mcbnb_pot=pot, uncertainty_keys=["rate", "cosmic"])
 
 
 def calc_frac_df(numu_df, nue_df, pot_numu, pot_nue, sector=None, bins=None,
-                 total_cov_fn=None):
+                 total_cov_fn=None, var = ('E', '', '')):
     """Fractional uncertainty of the first bin, per systematic knob, for nu_mu and nu_e.
 
     Returns a DataFrame indexed by knob (first row 'Total', rest sorted by ``frac_mu``)
@@ -56,8 +59,8 @@ def calc_frac_df(numu_df, nue_df, pot_numu, pot_nue, sector=None, bins=None,
     if bins is None:
         bins = [0.5, 7]
     total_cov_fn = total_cov_fn or _default_total_cov()
-    out_mu = _run_total_cov(numu_df, pot_numu, bins, total_cov_fn)
-    out_e = _run_total_cov(nue_df, pot_nue, bins, total_cov_fn)
+    out_mu = _run_total_cov(numu_df, pot_numu, bins, total_cov_fn, var)
+    out_e = _run_total_cov(nue_df, pot_nue, bins, total_cov_fn, var)
 
     universes = list(out_mu.rate_syst_dict.keys())
     if sector == "Flux":
@@ -77,11 +80,9 @@ def calc_frac_df(numu_df, nue_df, pot_numu, pot_nue, sector=None, bins=None,
     return sort_part(fracs_df, "frac_mu")
 
 
-def get_cov_bins(numu_df, nue_df, bins, pot_numu, pot_nue, total_cov_fn=None):
+def get_cov_bins(df, bins, pot, var, total_cov_fn=None):
     """Per-bin total fractional uncertainty ``(frac_mu, frac_e)`` for the given E bins."""
     total_cov_fn = total_cov_fn or _default_total_cov()
-    out_mu = _run_total_cov(numu_df, pot_numu, bins, total_cov_fn)
-    out_e = _run_total_cov(nue_df, pot_nue, bins, total_cov_fn)
-    frac_mu = np.sqrt(np.diag(out_mu.rate_cov)) / out_mu.rate_hist_cv
-    frac_e = np.sqrt(np.diag(out_e.rate_cov)) / out_e.rate_hist_cv
-    return frac_mu, frac_e
+    out = _run_total_cov(df, pot, bins, total_cov_fn, var)
+    u = Uncertainty(bins = bins, out = out)
+    return u
