@@ -118,5 +118,5 @@ def unc_plot_by_mode(df, bins, pot, var = ('E', '', '')):
         plt.stairs(values = outs[i].frac_bin, 
                    edges = bins, 
                    color = color_mode[i],
-                   label = f'Total ({100 * outs[i].frac_total:.2f}%)')
+                   label = genie_dict[i] + f' ({100 * outs[i].frac_total:.2f}%)')
         plt.legend()
