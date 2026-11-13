@@ -119,3 +119,4 @@ def unc_plot_by_mode(df, bins, pot, var = ('E', '', '')):
                    edges = bins, 
                    color = color_mode[i],
                    label = f'Total ({100 * outs[i].frac_total:.2e}%)')
+        plt.legend()
