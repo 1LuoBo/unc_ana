@@ -88,7 +88,7 @@ def get_cov_bins(df, bins, pot, var, total_cov_fn=None, Flux = False):
     if Flux:
         universes = list(out.rate_syst_dict.keys())
         universes = [uni for uni in universes if 'Flux' in uni]
-        cov = np.zeros(len(bins) - 1, len(bins) - 1)
+        cov = np.zeros((len(bins) - 1, len(bins) - 1))
         rate_syst_dict = {}
         for uni in universes:
             cov += out.rate_syst_dict[uni]['cov']

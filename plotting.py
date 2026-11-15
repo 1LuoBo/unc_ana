@@ -119,7 +119,7 @@ def unc_plot_by_mode(df, bins, pot, var = ('E', '', '')):
                    edges = bins, 
                    color = color_mode[i],
                    label = genie_dict[i] + f' ({100 * outs[i].frac_total:.2f}%)')
-        plt.legend()
+    plt.legend()
         
         
 def unc_plot_by_pdg(df, bins, pot, var = ('E', '', '')):
@@ -137,6 +137,7 @@ def unc_plot_by_pdg(df, bins, pot, var = ('E', '', '')):
     for i in pdg.keys():        
         plt.stairs(values = outs[i].frac_bin, 
                    edges = bins, 
-                   color = color_mode[i],
+                   color = color_pdg[i],
+                   linestyle = pdg_ls[i],
                    label = pdg[i] + f' ({100 * outs[i].frac_total:.2f}%)')
-        plt.legend()
+    plt.legend()
