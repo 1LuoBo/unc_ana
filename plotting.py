@@ -6,7 +6,7 @@ from .uncertainty import *
 from .classes import *
 
 __all__ = ['scatter_fracs', 'hist_step', 'q0q3', 
-           'unc_plot_by_mode']
+           'unc_plot_by_mode', 'unc_plot_by_pdg']
 
 
 
