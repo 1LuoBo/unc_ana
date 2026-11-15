@@ -1,6 +1,7 @@
 import pandas as pd
 import sys; sys.path.append("/exp/sbnd/app/users/lynnt/cafpyana")
 from makedf.util import *
+import ccbc
 
 __all__ = ["contained", "cont_exit", "muInScore", "muInSpill", "in_detector", "clean_duplicates", "muselect", "load_signal_checkpoint"]
 
