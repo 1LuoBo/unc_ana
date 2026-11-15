@@ -120,3 +120,23 @@ def unc_plot_by_mode(df, bins, pot, var = ('E', '', '')):
                    color = color_mode[i],
                    label = genie_dict[i] + f' ({100 * outs[i].frac_total:.2f}%)')
         plt.legend()
+        
+        
+def unc_plot_by_pdg(df, bins, pot, var = ('E', '', '')):
+    print('Running through all interaction modes.')
+    out_tot = get_cov_bins(df, bins, pot, var, Flux = True)
+    outs = {}
+    for i in pdg.keys():
+        print('Running through '+ pdg[i])
+        df_int = df[df.parent_pdg == i]
+        outs[i] = get_cov_bins(df_int, bins, pot, var, Flux = True)
+    plt.stairs(values = out_tot.frac_bin, 
+               edges = bins, 
+               label = f'Total ({100 * out_tot.frac_total:.2f}%)',
+               color = 'black')
+    for i in pdg.keys():        
+        plt.stairs(values = outs[i].frac_bin, 
+                   edges = bins, 
+                   color = color_mode[i],
+                   label = pdg[i] + f' ({100 * outs[i].frac_total:.2f}%)')
+        plt.legend()
