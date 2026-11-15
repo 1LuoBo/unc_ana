@@ -2,6 +2,7 @@ import pandas as pd
 import sys; sys.path.append("/exp/sbnd/app/users/lynnt/cafpyana")
 from makedf.util import *
 import ccbc
+import pickle
 
 __all__ = ["contained", "cont_exit", "muInScore", "muInSpill", "in_detector", "clean_duplicates", "muselect", "load_signal_checkpoint"]
 
@@ -146,9 +147,9 @@ def muselect(indf):
 def load_signal_checkpoint(
     path: str,
 ) -> tuple[pd.DataFrame, pd.DataFrame,
-           dict[str, SystematicsOutput],
-           dict[str, SystematicsOutput],
-           dict[str, SystematicsOutput]]:
+           dict[str, ccbc.SystematicsOutput],
+           dict[str, ccbc.SystematicsOutput],
+           dict[str, ccbc.SystematicsOutput]]:
     """Load a checkpoint written by :func:`save_signal_checkpoint`.
 
     Parameters
