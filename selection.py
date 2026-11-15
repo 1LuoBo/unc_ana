@@ -140,3 +140,29 @@ def muselect(indf):
 
     
     return df_dict
+
+
+def load_signal_checkpoint(
+    path: str,
+) -> tuple[pd.DataFrame, pd.DataFrame,
+           dict[str, SystematicsOutput],
+           dict[str, SystematicsOutput],
+           dict[str, SystematicsOutput]]:
+    """Load a checkpoint written by :func:`save_signal_checkpoint`.
+
+    Parameters
+    ----------
+    path : str
+        Path to the pickle file.
+
+    Returns
+    -------
+    reco_df : pd.DataFrame
+    true_df : pd.DataFrame
+    syst_total : dict[str, SystematicsOutput]
+    syst_signal : dict[str, SystematicsOutput]
+    syst_bkg : dict[str, SystematicsOutput]
+    """
+    with open(path, "rb") as f:
+        ck = pickle.load(f)
+    return ck["reco_df"], ck["true_df"], ck["syst_total"], ck["syst_signal"], ck["syst_bkg"]
