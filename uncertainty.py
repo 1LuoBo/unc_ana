@@ -85,17 +85,17 @@ def get_cov_bins(df, bins, pot, var, total_cov_fn=None, Flux = False):
     """Per-bin total fractional uncertainty ``(frac_mu, frac_e)`` for the given E bins."""
     total_cov_fn = total_cov_fn or _default_total_cov()
     out = _run_total_cov(df, pot, bins, total_cov_fn, var)
+    universes = list(out.rate_syst_dict.keys())
     if Flux:
-        universes = list(out.rate_syst_dict.keys())
         universes = [uni for uni in universes if 'Flux' in uni]
-        cov = np.zeros((len(bins) - 1, len(bins) - 1))
-        rate_syst_dict = {}
-        for uni in universes:
-            cov += out.rate_syst_dict[uni]['cov']
-            rate_syst_dict[uni] = out.rate_syst_dict[uni]
-        out = ccbc.SystematicsOutput(out.rate_hist_cv,
-                                     cov,
-                                     out.rate_syst_df,
-                                     rate_syst_dict)
+    cov = np.zeros((len(bins) - 1, len(bins) - 1))
+    rate_syst_dict = {}
+    for uni in universes:
+        cov += out.rate_syst_dict[uni]['cov']
+        rate_syst_dict[uni] = out.rate_syst_dict[uni]
+    out = ccbc.SystematicsOutput(out.rate_hist_cv,
+                                    cov,
+                                    out.rate_syst_df,
+                                    rate_syst_dict)
     u = Uncertainty(bins = bins, out = out)
     return u
