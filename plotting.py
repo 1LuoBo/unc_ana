@@ -126,18 +126,24 @@ def unc_plot_by_pdg(df, bins, pot, var = ('E', '', '')):
     print('Running through all interaction modes.')
     out_tot = get_cov_bins(df, bins, pot, var, Flux = True)
     outs = {}
+    is_sig = {}
     for i in pdg.keys():
         print('Running through '+ pdg[i])
         df_int = df[df.parent_pdg == i]
-        outs[i] = get_cov_bins(df_int, bins, pot, var, Flux = True)
+        if (len(df_int) > 0.01 * len(df)):
+            is_sig[i] = True
+            outs[i] = get_cov_bins(df_int, bins, pot, var, Flux = True)
+        else:
+            is_sig[i] = False
     plt.stairs(values = out_tot.frac_bin, 
                edges = bins, 
                label = f'Total ({100 * out_tot.frac_total:.2f}%)',
                color = 'black')
-    for i in pdg.keys():        
-        plt.stairs(values = outs[i].frac_bin, 
-                   edges = bins, 
-                   color = color_pdg[i],
-                   linestyle = pdg_ls[i],
-                   label = pdg[i] + f' ({100 * outs[i].frac_total:.2f}%)')
+    for i in pdg.keys():
+        if is_sig[i]:
+            plt.stairs(values = outs[i].frac_bin, 
+                       edges = bins, 
+                       color = color_pdg[i],
+                       linestyle = pdg_ls[i],
+                       label = pdg[i] + f' ({100 * outs[i].frac_total:.2f}%)')
     plt.legend()
